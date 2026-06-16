@@ -1,0 +1,80 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def mergeTrees(root1, root2):
+    if root1 is None:
+        return root2
+    if root2 is None:
+        return root1
+    
+    root1.val += root2.val
+    root1.left = mergeTrees(root1.left, root2.left)
+    root1.right = mergeTrees(root1.right, root2.right)
+    return root1
+
+def build_tree_from_string(input_str):
+    tokens = input_str.split()
+    if not tokens or tokens[0] == "null":
+        return None
+    
+    root = TreeNode(int(tokens[0]))
+    queue = [root]
+    i = 1
+    
+    while queue and i < len(tokens):
+        current = queue.pop(0)
+        
+        # Process left child
+        if i < len(tokens):
+            if tokens[i] != "null":
+                current.left = TreeNode(int(tokens[i]))
+                queue.append(current.left)
+            i += 1
+            
+        # Process right child
+        if i < len(tokens):
+            if tokens[i] != "null":
+                current.right = TreeNode(int(tokens[i]))
+                queue.append(current.right)
+            i += 1
+            
+    return root
+
+def print_level_order(root):
+    if root is None:
+        print("Empty Tree")
+        return
+    
+    queue = [root]
+    result = []
+    
+    while queue:
+        node = queue.pop(0)
+        if node:
+            result.append(str(node.val))
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            result.append("null")
+            
+    while result and result[-1] == "null":
+        result.pop()
+        
+    print(" ".join(result))
+if __name__ == "__main__":
+    print("Enter tree nodes level-by-level, separated by spaces. Use 'null' for empty spots.")
+    print("Example: 1 3 2 5 null\n")
+    
+    str1 = input("Enter Tree 1 values: ")
+    str2 = input("Enter Tree 2 values: ")
+    
+    tree1 = build_tree_from_string(str1)
+    tree2 = build_tree_from_string(str2)
+    
+    merged = mergeTrees(tree1, tree2)
+    
+    print("\nMerged Tree Result:")
+    print_level_order(merged)
