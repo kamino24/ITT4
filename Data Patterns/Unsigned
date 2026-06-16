@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+double power(double x, unsigned int n, unsigned int *mult_count) {
+    double result = 1.0;
+    *mult_count = 0;
+
+    if (n == 0) {
+        return 1.0;
+    }
+
+    while (n > 0) {
+        if (n % 2 == 1) {
+            result *= x;
+            (*mult_count)++;
+        }
+        if (n > 1) {
+            x *= x;
+            (*mult_count)++;
+        }
+        n /= 2;
+    }
+
+    return result;
+}
+
+int main() {
+    double x = 2.5;
+    unsigned int n = 13;
+    unsigned int multiplications = 0;
+
+    double res = power(x, n, &multiplications);
+
+    printf("Result: %.4f\n", res);
+    printf("Multiplications: %u\n", multiplications);
+
+    return 0;
+}
