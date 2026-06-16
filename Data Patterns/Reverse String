@@ -1,0 +1,6 @@
+s = input("Enter a string: ")
+l = s.split()
+l1 = l[::-1]
+for i in l1:
+	print(i, end=" ")
+print("\n")
