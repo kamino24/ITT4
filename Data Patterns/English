@@ -1,0 +1,28 @@
+import sys
+from collections import Counter
+
+def solve():
+    lines = sys.stdin.read().splitlines()
+    if not lines:
+        return
+    
+    n = int(lines[0])
+    for i in range(1, n + 1):
+        if i >= len(lines):
+            break
+        line = lines[i]
+        counts = Counter(c for c in line if c.isalpha())
+        if not counts:
+            print("")
+            continue
+        
+        max_freq = max(counts.values())
+        highest = [char for char, freq in counts.items() if freq == max_freq]
+        
+        capitals = sorted([c for c in highest if c.isupper()])
+        smalls = sorted([c for c in highest if c.islower()])
+        
+        print("".join(capitals + smalls))
+
+if __name__ == "__main__":
+    solve()
