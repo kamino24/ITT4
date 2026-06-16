@@ -1,0 +1,17 @@
+from collections import Counter
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        for i in paragraph:
+            if not i.isalnum() and i != ' ':
+                paragraph = paragraph.replace(i, " ")
+        s = paragraph.lower().split()
+        b = set(banned)
+        count = Counter(s)
+        word = ""
+        m = 0
+        for w in count:
+            if w not in b:
+                if count[w] > m:
+                    m = count[w]
+                    word = w
+        return word
