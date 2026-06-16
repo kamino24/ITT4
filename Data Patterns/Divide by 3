@@ -1,0 +1,12 @@
+def shortest_repunit(n):
+    rem = 0
+    k = 0
+    while True:
+        k += 1
+        rem = (rem * 10 + 1) % n
+        if rem == 0:
+            return "1" * k
+
+if __name__ == "__main__":
+    n = int(input("Enter a number ending in 3: "))
+    print(shortest_repunit(n))
