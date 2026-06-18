@@ -1,0 +1,68 @@
+import sys
+
+def solve():
+    # Read all input data from standard input
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+        
+    t = int(input_data[0])
+    idx = 1
+    
+    out = []
+    for _ in range(t):
+        n = int(input_data[idx])
+        x = int(input_data[idx+1])
+        s = int(input_data[idx+2])
+        u = input_data[idx+3]
+        idx += 4
+        
+        # dp[e] stores the max people seated when exactly 'e' tables are empty
+        # Initialize with -1 (unreachable state), except dp[x] = 0 (all tables empty initially)
+        dp = [-1] * (x + 1)
+        dp[x] = 0
+        
+        for person in u:
+            # Create a new DP array for the current step
+            ndp = [-1] * (x + 1)
+            
+            for e in range(x + 1):
+                if dp[e] == -1:
+                    continue
+                
+                ans = dp[e]
+                # Calculate available seats in already opened tables
+                filler_slots = (x - e) * s - ans
+                
+                if person == 'I':
+                    # Option 1: Kick out
+                    if ans > ndp[e]:
+                        ndp[e] = ans
+                    # Option 2: Open a new table
+                    if e > 0 and ans + 1 > ndp[e - 1]:
+                        ndp[e - 1] = ans + 1
+                        
+                elif person == 'E':
+                    # Must sit in a filler slot if available
+                    gained = 1 if filler_slots > 0 else 0
+                    if ans + gained > ndp[e]:
+                        ndp[e] = ans + gained
+                        
+                elif person == 'A':
+                    # Option 1: Fill an existing table or get kicked
+                    gained = 1 if filler_slots > 0 else 0
+                    if ans + gained > ndp[e]:
+                        ndp[e] = ans + gained
+                    # Option 2: Open a new empty table
+                    if e > 0 and ans + 1 > ndp[e - 1]:
+                        ndp[e - 1] = ans + 1
+            
+            dp = ndp
+            
+        # The answer is the maximum value found in the DP array
+        out.append(str(max(dp)))
+        
+    print('\n'.join(out))
+
+if __name__ == '__main__':
+    solve()
