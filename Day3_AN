@@ -1,0 +1,46 @@
+import sys
+
+def solve():
+    # Read all inputs from standard input efficiently
+    input = sys.stdin.read
+    data = input().split()
+    
+    if not data:
+        return
+
+    # First element is the number of test cases
+    t = int(data[0])
+    idx = 1
+    
+    out = []
+    for _ in range(t):
+        n = int(data[idx])
+        k = int(data[idx+1])
+        s = data[idx+2]
+        idx += 3
+        
+        # Array to store the count of '1's for each remainder group modulo k
+        ones_count = [0] * k
+        
+        # Count '1's based on their index modulo k
+        for i in range(n):
+            if s[i] == '1':
+                ones_count[i % k] += 1
+                
+        # Check if any group has an odd number of '1's
+        possible = True
+        for count in ones_count:
+            if count % 2 != 0:
+                possible = False
+                break
+                
+        if possible:
+            out.append("YES")
+        else:
+            out.append("NO")
+            
+    # Print all results separated by a newline
+    print('\n'.join(out))
+
+if __name__ == '__main__':
+    solve()
